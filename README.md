@@ -1,0 +1,4 @@
+GunnyLog
+========
+
+Ruby logfile class
