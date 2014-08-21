@@ -1,8 +1,10 @@
 # Test program for ruby logfile class
 require_relative 'GunnyLog'
 
-# Test for screen logging, one liner
+# Test for screen logging, one liners
 GunnyLog.instance.message("Error Catcher", "Testing again") 
+GunnyLog.instance.fmessage("Error Catcher", "Testing again = %s", "Gunnny") 
+GunnyLog.instance.fmessage("Error Catcher", "Testing number = %d", 45) 
 
 # Test for screen logging
 logs = GunnyLog.instance

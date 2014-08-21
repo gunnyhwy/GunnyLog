@@ -1,7 +1,9 @@
 # GunnyLog logs messages to stdout
 # GunnyLogFile logs messages to a file
+
 require 'singleton'
 require 'date'
+
 
 # GunnyLog logs messages to stdout
 class GunnyLog
@@ -17,10 +19,15 @@ class GunnyLog
     def setLocation(name) # set message location
         @@location = name
     end
-    
+        
     def message(loc = nil, msg) # write message
-            write_msg(STDOUT, loc, msg)
+        write_msg(STDOUT, loc, msg)
     end  
+    
+    def fmessage(loc = nil, msg, arg) #write formatted message
+        formatted = sprintf(msg, arg)
+        message(loc, formatted) 
+    end
     
     private
 
@@ -37,6 +44,7 @@ class GunnyLog
     end
     
 end    
+    
 
 # GunnyLogFile logs messages to a file
 class GunnyLogFile < GunnyLog
