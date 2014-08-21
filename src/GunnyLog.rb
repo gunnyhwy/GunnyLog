@@ -1,3 +1,5 @@
+# GunnyLog logs messages to stdout
+# GunnyLogFile logs messages to a file
 require 'singleton'
 require 'date'
 
@@ -36,7 +38,7 @@ class GunnyLog
         
 end    
 
-#GunnyLogFile logs messages to a file
+# GunnyLogFile logs messages to a file
 class GunnyLogFile < GunnyLog
     
     def open(filename = "gunnylog")
