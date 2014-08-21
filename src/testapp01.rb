@@ -51,4 +51,8 @@ logf.message("init","Testing GunnyFileLog 07")
 logf.message("read","Testing GunnyFileLog 08")
 logf.message("close","Testing GunnyFileLog 09")
 
+logf.fmessage("Error Catcher", "Testing again = %s", "Gunny") 
+logf.fmessage("Error Catcher", "Testing number = %d", 45) 
+logf.fmessage("name: %s, age: %d, job: %s", ["Gunny", 45, "Developer"])
+
 logf.close
