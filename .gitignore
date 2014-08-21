@@ -1,2 +1,4 @@
-# log files
+# ignore files
 *.log
+zsaves
+
