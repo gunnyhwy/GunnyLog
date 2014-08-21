@@ -24,9 +24,13 @@ class GunnyLog
         write_msg(STDOUT, loc, msg)
     end  
     
-    def fmessage(loc = nil, msg, arg) #write formatted message
-        formatted = sprintf(msg, arg)
+    def fmessage(loc = nil, msg, args)  # write formatted message
+        formatted = sprintf(msg, *args) # single arg or array of args 
         message(loc, formatted) 
+    end
+    
+    def var_args(arg1, arg2, *more)
+        puts more
     end
     
     private
