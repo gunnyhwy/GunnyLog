@@ -1,5 +1,6 @@
 # GunnyLog logs messages to stdout
 # GunnyLogFile logs messages to a file
+
 require 'singleton'
 require 'date'
 
@@ -20,29 +21,38 @@ class GunnyLog
     @location = 'MainMethod'
 
 
-    # @param [bool] switch
-    def set_switch(switch) # switch logging on and off
+    # @param [bool] switch - logging on and off
+    def set_switch(switch)
         @onoffswitch = switch
     end
 
-    # @param [string] name
-    def set_location(name) # set message location
+    # @param [string] name - set message location
+    def set_location(name)
         @location = name
     end
 
-    # @param [string] loc
-    # @param [string] msg
-    def message(loc = nil, msg) # write message
+    # write message
+    # @param [string] loc - message location, optional
+    # @param [string] msg - message string
+    def message(loc = nil, msg)
         write_msg(STDOUT, loc, msg)
     end
 
-    def formatted_message(loc = nil, msg, args)  # write formatted message
-        formatted = sprintf(msg, *args) # single arg or array of args
+    # write formatted message - single arg or array of args
+    # @param [string] loc - message location, optional
+    # @param [string] msg - message format string
+    # @param [arg or array of args]
+    def formatted_message(loc = nil, msg, args)
+        formatted = sprintf(msg, *args)
         message(loc, formatted)
     end
 
-    def formatted_message_vars(loc, msg, *args)  # write formatted message
-        formatted = sprintf(msg, *args) # variable number of args
+    # write formatted message - variable number of args
+    # @param [string] loc - message location, optional
+    # @param [string] msg - message format string
+    # @param [variable number of args]
+    def formatted_message_vars(loc, msg, *args)
+        formatted = sprintf(msg, *args)
         message(loc, formatted)
     end
 
@@ -73,17 +83,23 @@ class GunnyLogFile < GunnyLog
     end
     @_is_file_open = false
 
-    def open(filename = 'gunnylog') # open the file
+    # open the logfile
+    # @param [string] filename
+    def open(filename = 'gunnylog')
         @outfile = File.open(filename  + '.log', 'a+')
         @_is_file_open = true
     end
-        
-    def close # close the file
+
+    # close the logfile
+    def close
     	@outfile.close
       @_is_file_open = false
-    end         
+    end
 
-    def message(loc = nil, msg) # write message to file
+    # write message to file
+    # @param [string] loc - message location, optional
+    # @param [string] msg - message string
+    def message(loc = nil, msg)
       if @_is_file_open
         write_msg(@outfile, loc, msg)
       end
