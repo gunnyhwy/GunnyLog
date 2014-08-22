@@ -1,4 +1,8 @@
 # ignore files
 *.log
+*.html
+*.js
 zsaves
+zsaves/
 scr/.idea
+scr/.idea/
