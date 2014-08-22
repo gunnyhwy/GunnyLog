@@ -1,6 +1,5 @@
 # GunnyLog logs messages to stdout
 # GunnyLogFile logs messages to a file
-
 require 'singleton'
 require 'date'
 
@@ -29,8 +28,9 @@ class GunnyLog
         message(loc, formatted) 
     end
     
-    def var_args(arg1, arg2, *more)
-        puts more
+    def fmessage_vars(loc, msg, *fargs)  # write formatted message
+        formatted = sprintf(msg, *fargs) # variable number of args 
+        message(loc, formatted) 
     end
     
     private

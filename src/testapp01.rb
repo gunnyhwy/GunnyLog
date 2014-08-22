@@ -8,6 +8,8 @@ GunnyLog.instance.fmessage("Error Catcher", "Testing again = %s", "Gunny")
 GunnyLog.instance.fmessage("Error Catcher", "Testing number = %d", 45) 
 GunnyLog.instance.fmessage("name: %s, age: %d, job: %s", ["Gunny", 45, "Developer"])
 GunnyLog.instance.fmessage("name: %s", "Gunny")
+GunnyLog.instance.fmessage_vars(nil, "name: %s, age: %d, job: %s", "Gunny", 45, "Developer")
+GunnyLog.instance.fmessage_vars("Main", "name: %s", "Gunny")
 
 
 # Test for screen logging
@@ -33,6 +35,9 @@ logs.message("close","Testing GunnyScreenLog 09")
 logs.fmessage("Error Catcher", "Testing again = %s", "Gunny") 
 logs.fmessage("Error Catcher", "Testing number = %d", 45) 
 logs.fmessage("name: %s, age: %d, job: %s", ["Gunny", 45, "Developer"])
+
+logs.fmessage_vars(nil, "name: %s, age: %d, job: %s", "Gunny", 45, "Developer")
+logs.fmessage_vars("Main", "name: %s", "Gunny")
 
 
 #Test for file logging
@@ -60,5 +65,8 @@ logf.message("close","Testing GunnyFileLog 09")
 logf.fmessage("Error Catcher", "Testing again = %s", "Gunny") 
 logf.fmessage("Error Catcher", "Testing number = %d", 45) 
 logf.fmessage("name: %s, age: %d, job: %s", ["Gunny", 45, "Developer"])
+
+logf.fmessage_vars(nil, "name: %s, age: %d, job: %s", "Gunny", 45, "Developer")
+logf.fmessage_vars("Main", "name: %s", "Gunny")
 
 logf.close
