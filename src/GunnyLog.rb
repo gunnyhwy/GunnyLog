@@ -48,7 +48,7 @@ class GunnyLog
     end
 
     # write formatted message - variable number of args
-    # @param [string] loc - message location, optional
+    # @param [string] loc - message location
     # @param [string] msg - message format string
     # @param [variable number of args]
     def formatted_message_vars(loc, msg, *args)
