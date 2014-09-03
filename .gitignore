@@ -2,8 +2,6 @@
 *.log
 *.html
 *.js
-zsaves
-zsaves/
+scr/zsaves
 scr/.idea
-scr/.idea/
-scr/.idea/*
+.idea
