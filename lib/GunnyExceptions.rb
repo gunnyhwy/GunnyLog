@@ -1,2 +1,0 @@
-class GunnyFileException < Exception
-end

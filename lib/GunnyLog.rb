@@ -1,6 +1,5 @@
 # GunnyLog logs messages to stdout
 # GunnyLogFile logs messages to a file
-require 'GunnyExceptions'
 require 'singleton'
 require 'date'
 
