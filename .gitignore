@@ -2,6 +2,9 @@
 *.log
 *.html
 *.js
-scr/zsaves
-scr/.idea
+src/zsaves
+src/.idea
 .idea
+.gem
+.gemspec
+projectFilesBackup
