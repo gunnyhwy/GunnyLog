@@ -5,6 +5,6 @@
 src/zsaves
 src/.idea
 .idea
-.gem
-.gemspec
+*.gem
+*.gemspec
 projectFilesBackup
