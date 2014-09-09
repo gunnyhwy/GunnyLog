@@ -1,5 +1,5 @@
 # Test program for ruby logfile class
-require_relative 'GunnyLog'
+require 'GunnyLog'
 
 
 # Test for screen logging, one liners
