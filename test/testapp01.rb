@@ -5,10 +5,10 @@ require 'GunnyLog'
 # Test for screen logging, one liners
 GunnyLog.instance.message('Error Catcher', 'Testing again') 
 GunnyLog.instance.formatted_message('Error Catcher', 'Testing again = %s', 'Gunny')
-GunnyLog.instance.formatted_message('Error Catcher', 'Testing number = %d', 45)
-GunnyLog.instance.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 45, 'Developer'])
+GunnyLog.instance.formatted_message('Error Catcher', 'Testing number = %d', 42)
+GunnyLog.instance.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 GunnyLog.instance.formatted_message('name: %s', 'Gunny')
-GunnyLog.instance.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 45, 'Developer')
+GunnyLog.instance.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 GunnyLog.instance.formatted_message_vars('Main', 'name: %s', 'Gunny')
 
 
@@ -33,10 +33,10 @@ logs.message('read','Testing GunnyScreenLog 08')
 logs.message('close','Testing GunnyScreenLog 09')
 
 logs.formatted_message('Error Catcher', 'Testing again = %s', 'Gunny')
-logs.formatted_message('Error Catcher', 'Testing number = %d', 45)
-logs.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 45, 'Developer'])
+logs.formatted_message('Error Catcher', 'Testing number = %d', 42)
+logs.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 
-logs.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 45, 'Developer')
+logs.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 logs.formatted_message_vars('Main', 'name: %s', 'Gunny')
 
 
@@ -63,10 +63,10 @@ logf.message('read','Testing GunnyFileLog 08')
 logf.message('close','Testing GunnyFileLog 09')
 
 logf.formatted_message('Error Catcher', 'Testing again = %s', 'Gunny')
-logf.formatted_message('Error Catcher', 'Testing number = %d', 45)
-logf.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 45, 'Developer'])
+logf.formatted_message('Error Catcher', 'Testing number = %d', 42)
+logf.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 
-logf.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 45, 'Developer')
+logf.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 logf.formatted_message_vars('Main', 'name: %s', 'Gunny')
 
 logf.close

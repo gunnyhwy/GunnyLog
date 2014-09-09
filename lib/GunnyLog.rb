@@ -1,5 +1,4 @@
-# GunnyLog logs messages to stdout
-# GunnyLogFile logs messages to a file
+# GunnyLog and GunnyLogFile classes
 require 'singleton'
 require 'date'
 
@@ -9,23 +8,26 @@ class GunnyLog
     
     include Singleton
 
+    # logging off and on flag
     class << self;
       attr_accessor :onoffswitch
     end
     @onoffswitch = true
 
+    # location message was logged from
     class << self;
       attr_accessor :location
     end
     @location = 'MainMethod'
 
-
-    # @param [bool] switch - logging on and off
+    # set logging on and off
+    # @param [bool] switch
     def set_switch(switch)
         @onoffswitch = switch
     end
 
-    # @param [string] name - set message location
+    # set location message was logged from
+    # @param [string] name
     def set_location(name)
         @location = name
     end
@@ -72,11 +74,12 @@ class GunnyLog
     end
     
 end    
-    
+
 
 # GunnyLogFile logs messages to a file
 class GunnyLogFile < GunnyLog
 
+    # is file open flag
     class << self;
       attr_accessor :_is_file_open
     end
