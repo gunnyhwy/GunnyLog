@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'GunnyLog'
-  s.version       = '1.0.2'
+  s.version       = '1.0.3'
   s.date          = '2014-08-01'
   s.summary       = 'Ruby log file class'
   s.description   = 'Ruby class for logging to screen or file'

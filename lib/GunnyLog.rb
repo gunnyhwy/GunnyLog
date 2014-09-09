@@ -1,24 +1,12 @@
-# GunnyLog and GunnyLogFile classes
+# GunnyLog class
 require 'singleton'
 require 'date'
 
 
-# GunnyLog logs messages to stdout
+# GunnyLog logs messages to stdout or a file
 class GunnyLog
     
     include Singleton
-
-    # logging off and on flag
-    class << self;
-      attr_accessor :onoffswitch
-    end
-    @onoffswitch = true
-
-    # location message was logged from
-    class << self;
-      attr_accessor :location
-    end
-    @location = 'MainMethod'
 
     # set logging on and off
     # @param [bool] switch
@@ -32,11 +20,28 @@ class GunnyLog
         @location = name
     end
 
-    # write message
+    # open the logfile
+    # @param [string] filename
+    def open(filename = 'gunnylog')
+      @outfile = File.open(filename  + '.log', 'a+')
+      @_is_file_open = true
+    end
+
+    # close the logfile
+    def close
+      @outfile.close
+      @_is_file_open = false
+    end
+
+    # write message to file
     # @param [string] loc - message location, optional
     # @param [string] msg - message string
     def message(loc = nil, msg)
+      if @_is_file_open
+        write_msg(@outfile, loc, msg)
+      else
         write_msg(STDOUT, loc, msg)
+      end
     end
 
     # write formatted message - single arg or array of args
@@ -59,6 +64,24 @@ class GunnyLog
 
     private
 
+    # logging off and on flag
+    class << self;
+      attr_accessor :onoffswitch
+    end
+    @onoffswitch = true
+
+    # location message was logged from
+    class << self;
+      attr_accessor :location
+    end
+    @location = 'MainMethod'
+
+    # is file open flag
+    class << self;
+      attr_accessor :_is_file_open
+    end
+    @_is_file_open = false
+
     def write_msg(output, loc, msg)
         if loc == nil
           loc = @location
@@ -73,38 +96,9 @@ class GunnyLog
         d.strftime('%m/%d/%Y|%I:%M:%S%p')
     end
     
-end    
+end
 
-
-# GunnyLogFile logs messages to a file
+# GunnyLogFile from earlier versions
 class GunnyLogFile < GunnyLog
 
-    # is file open flag
-    class << self;
-      attr_accessor :_is_file_open
-    end
-    @_is_file_open = false
-
-    # open the logfile
-    # @param [string] filename
-    def open(filename = 'gunnylog')
-        @outfile = File.open(filename  + '.log', 'a+')
-        @_is_file_open = true
-    end
-
-    # close the logfile
-    def close
-    	@outfile.close
-      @_is_file_open = false
-    end
-
-    # write message to file
-    # @param [string] loc - message location, optional
-    # @param [string] msg - message string
-    def message(loc = nil, msg)
-      if @_is_file_open
-        write_msg(@outfile, loc, msg)
-      end
-    end
- 
 end
