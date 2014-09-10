@@ -63,13 +63,16 @@ class GunnyLog
         @_is_file_open = true
       rescue SystemCallError
         raise GunnyLogException.new('Error opening file: ' + filename)
+        #STDERR.puts 'GunnyLog: Error opening file: ' + filename + ' using stdout'
+        #@_is_file_open = false
+        #@outfile = STDOUT
       end
     end
 
     # Open the logfile with path, name, and extention
     # @param pathname [string] path of the logfile
     # @param filename [string] name of the logfile
-    # @param extention [string] extension of the logfile
+    # @param extension [string] extension of the logfile
     def open_with_info(pathname = nil,
                        filename = 'gunnylog',
                        extension = 'log')
@@ -93,11 +96,12 @@ class GunnyLog
     def close
       begin
         @outfile.close
-        @_is_file_open = false
-        @outfile = STDOUT
       rescue SystemCallError
         raise GunnyLogException.new('Error closing file')
+        #STDERR.puts 'GunnyLog: Error closing file'
       end
+      @_is_file_open = false
+      @outfile = STDOUT
     end
 
     # Write message to file
