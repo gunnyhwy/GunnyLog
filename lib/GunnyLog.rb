@@ -5,37 +5,51 @@ require 'date'
 
 # GunnyLog logs messages to stdout or a file
 class GunnyLog
-    
-    include Singleton
 
-    # set logging on and off
-    # @param [bool] switch
+    # Singleton instance method
+    def self.instance
+      @@instance ||= new
+    end
+
+    # Set logging on and off
+    #
+    # @param switch [bool] switch for on or off
     def set_switch(switch)
         @onoffswitch = switch
     end
 
-    # set location message was logged from
-    # @param [string] name
+    # Set message was logged from location
+    #
+    # @param name [string] location name
     def set_location(name)
         @location = name
     end
 
-    # open the logfile
-    # @param [string] filename
+    # Open the logfile
+    #
+    # @param filename [string] name of the .log file
     def open(filename = 'gunnylog')
       @outfile = File.open(filename  + '.log', 'a+')
       @_is_file_open = true
     end
 
-    # close the logfile
+    # Close the logfile
     def close
       @outfile.close
       @_is_file_open = false
     end
 
-    # write message to file
-    # @param [string] loc - message location, optional
-    # @param [string] msg - message string
+    # Write message to file
+    #
+    # @param msg [string] message string
+    def msg(msg)
+      message(nil,msg)
+    end
+
+    # Write message to file
+    #
+    # @param loc [string] message location, optional
+    # @param msg [string] message string
     def message(loc = nil, msg)
       if @_is_file_open
         write_msg(@outfile, loc, msg)
@@ -44,19 +58,21 @@ class GunnyLog
       end
     end
 
-    # write formatted message - single arg or array of args
-    # @param [string] loc - message location, optional
-    # @param [string] msg - message format string
-    # @param [arg or array of args]
+    # Write formatted message with single arg or array of args
+    #
+    # @param loc [string] message location, optional
+    # @param msg [string] message format string
+    # @param args [arg or array of args]
     def formatted_message(loc = nil, msg, args)
         formatted = sprintf(msg, *args)
         message(loc, formatted)
     end
 
-    # write formatted message - variable number of args
-    # @param [string] loc - message location
-    # @param [string] msg - message format string
-    # @param [variable number of args]
+    # Write formatted message with variable number of args
+    #
+    # @param loc [string] message location
+    # @param msg [string] message format string
+    # @param args [variable number of args]
     def formatted_message_vars(loc, msg, *args)
         formatted = sprintf(msg, *args)
         message(loc, formatted)
@@ -64,33 +80,50 @@ class GunnyLog
 
     private
 
+    include Singleton
+
     # logging off and on flag
     class << self;
       attr_accessor :onoffswitch
     end
-    @onoffswitch = true
 
     # location message was logged from
     class << self;
       attr_accessor :location
     end
-    @location = 'MainMethod'
 
     # is file open flag
     class << self;
       attr_accessor :_is_file_open
     end
-    @_is_file_open = false
 
+    # log file
+    class << self;
+      attr_accessor :outfile
+    end
+
+    # initailize
+    def initialize
+      @onoffswitch = true
+      @location = 'MainMethod'
+      @_is_file_open = false
+      @outfile = STDOUT
+    end
+
+    # write the msg
     def write_msg(output, loc, msg)
         if loc == nil
           loc = @location
+        else
+          # new, not sure
+          @location = loc
         end
         if @onoffswitch
-            output.puts "#{date_str}|#{loc}|#{msg}"
+            output.puts "#{date_str}|#{$0}|#{loc}|#{msg}"
         end
     end
 
+    # get the date time stamp
     def date_str
         d = DateTime.now
         d.strftime('%m/%d/%Y|%I:%M:%S%p')
@@ -98,7 +131,7 @@ class GunnyLog
     
 end
 
-# GunnyLogFile from earlier versions
-class GunnyLogFile < GunnyLog
 
+# @deprecated Use {#GunnyLog} instead
+class GunnyLogFile < GunnyLog
 end

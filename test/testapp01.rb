@@ -10,11 +10,13 @@ GunnyLog.instance.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 
 GunnyLog.instance.formatted_message('name: %s', 'Gunny')
 GunnyLog.instance.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 GunnyLog.instance.formatted_message_vars('Main', 'name: %s', 'Gunny')
+GunnyLog.instance.msg('Testing new method')
 
 
 # Test for screen logging
 logs = GunnyLog.instance
 
+logs.msg('Testing new method')
 logs.message('Testing GunnyScreenLog 01')
 logs.set_switch(false)
 logs.message('Testing GunnyScreenLog 02')
@@ -69,9 +71,11 @@ logf.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 logf.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 logf.formatted_message_vars('Main', 'name: %s', 'Gunny')
 
+logf.msg('Testing new method')
 logf.close
 
 logf.message('Error Time!')
+
 
 #Test for file logging
 logf = GunnyLog.instance
@@ -102,4 +106,5 @@ logf.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 logf.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 logf.formatted_message_vars('Main', 'name: %s', 'Gunny')
 
+logf.msg('Testing new method')
 logf.close
