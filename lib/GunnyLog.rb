@@ -1,9 +1,11 @@
 # GunnyLog class
+require 'GunnyLog/version'
+require 'GunnyLog/exceptions'
 require 'singleton'
 require 'date'
 
 
-# GunnyLog logs messages to stdout or a file
+# GunnyLog logs messages to stdout(default), stderr, or a file
 class GunnyLog
 
     # Singleton instance method
@@ -12,54 +14,110 @@ class GunnyLog
     #end
 
     # Set logging on and off
-    #
-    # @param switch [bool] switch for on or off
-    def set_switch(switch)
-        @onoffswitch = switch
+    # @param flag [bool] switch for on or off
+    def set_logging_enabled(flag)
+      @onoffswitch = flag
+    end
+
+    # Set logging on and off
+    # @deprecated Use {#set_logging_enabled} instead
+    # @param flag [bool] switch for on or off
+    def set_switch(flag)
+        @onoffswitch = flag
     end
 
     # Set message was logged from location
-    #
-    # @param name [string] location name
-    def set_location(name)
-        @location = name
+    # @param loc [string] location name
+    def set_message_location(loc)
+      @location = loc
+    end
+
+    # Set message was logged from location
+    # @deprecated Use {#set_message_location} instead
+    # @param loc [string] location name
+    def set_location(loc)
+        @location = loc
+    end
+
+    # Set output to STDOUT, default
+    def set_output_stdout
+      if @_is_file_open
+        self.close
+      end
+      @outfile = STDOUT
+    end
+
+    # Set output to STDERR
+    def set_output_stderr
+      if @_is_file_open
+        self.close
+      end
+      @outfile = STDERR
     end
 
     # Open the logfile
-    #
-    # @param filename [string] name of the .log file
-    def open(filename = 'gunnylog')
-      @outfile = File.open(filename  + '.log', 'a+')
-      @_is_file_open = true
+    # @param filename [string] name of the logfile
+    def open(filename = 'gunnylog.log')
+      begin
+        @outfile = File.open(filename, 'a+')
+        @_is_file_open = true
+      rescue SystemCallError
+        raise GunnyLogException.new('Error opening file: ' + filename)
+      end
+    end
+
+    # Open the logfile with path, name, and extention
+    # @param pathname [string] path of the logfile
+    # @param filename [string] name of the logfile
+    # @param extention [string] extension of the logfile
+    def open_with_info(pathname = nil,
+                       filename = 'gunnylog',
+                       extension = 'log')
+
+      #if pathname == nil
+      #  puts 'pathname  = nil'
+      #else
+      #  puts 'pathname  = ' + pathname
+      #end
+      #puts 'filename  = ' + filename
+      #puts 'extension = ' + extension
+
+      if pathname == nil
+        self.open(filename  + '.' + extension)
+      else
+        self.open(pathname + '/' + filename  + '.' + extension)
+      end
     end
 
     # Close the logfile
     def close
-      @outfile.close
-      @_is_file_open = false
-    end
-
-    # Write message to file
-    #
-    # @param msg [string] message string
-    def msg(msg)
-      message(nil,msg)
-    end
-
-    # Write message to file
-    #
-    # @param loc [string] message location, optional
-    # @param msg [string] message string
-    def message(loc = nil, msg)
-      if @_is_file_open
-        write_msg(@outfile, loc, msg)
-      else
-        write_msg(STDOUT, loc, msg)
+      begin
+        @outfile.close
+        @_is_file_open = false
+        @outfile = STDOUT
+      rescue SystemCallError
+        raise GunnyLogException.new('Error closing file')
       end
     end
 
+    # Write message to file
+    # @param msg [string] message string
+    def msg(msg)
+      message(nil, msg)
+    end
+
+    # Write message to file
+    # @param loc [string] message location, optional
+    # @param msg [string] message string
+    def message(loc = nil, msg)
+      #if @_is_file_open
+        write_msg(@outfile, loc, msg)
+      #else
+      #  write_msg(STDOUT, loc, msg)
+      #end
+    end
+
     # Write formatted message with single arg or array of args
-    #
     # @param loc [string] message location, optional
     # @param msg [string] message format string
     # @param args [arg or array of args]
@@ -69,7 +127,6 @@ class GunnyLog
     end
 
     # Write formatted message with variable number of args
-    #
     # @param loc [string] message location
     # @param msg [string] message format string
     # @param args [variable number of args]
