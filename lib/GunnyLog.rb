@@ -7,9 +7,9 @@ require 'date'
 class GunnyLog
 
     # Singleton instance method
-    def self.instance
-      @@instance ||= new
-    end
+    #def self.instance
+    #  @@instance ||= new
+    #end
 
     # Set logging on and off
     #
