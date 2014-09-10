@@ -7,4 +7,5 @@ src/.idea
 .idea
 *.gem
 *.gemspec
+*.txt
 projectFilesBackup
