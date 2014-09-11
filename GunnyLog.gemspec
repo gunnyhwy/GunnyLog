@@ -5,7 +5,7 @@ require 'GunnyLog/version'
 Gem::Specification.new do |s|
   s.name          = 'GunnyLog'
   s.version       = GunnyLog::VERSION
-  s.date          = '2014-09-10'
+  s.date          = '2014-09-11'
   s.summary       = 'Ruby log file class'
   s.description   = 'Ruby class for logging to screen or file'
   s.authors       = ['GunnyHwy']

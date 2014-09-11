@@ -4,11 +4,49 @@ require 'GunnyLog/exceptions'
 require 'singleton'
 require 'date'
 
-
-# GunnyLog logs messages to stdout(default), stderr, or a file
-# GunnyLog is a singleton and uses the instance method. Examples:
-# log = GunnyLog.instance or GunnyLog.instance.msg('Error message')
+# GunnyLog logs messages to stdout, stderr, or a file. It defaults
+# to stdout. GunnyLog is a singleton and uses the instance method.
+# For example you can use GunnyLog.instance.msg('Error message')
+# or you can use log = GunnyLog.instance
 class GunnyLog
+
+    include Singleton
+
+    # public class attributes
+
+    class << self;
+      # Logging flag on and off (default=on)
+      private
+      attr_accessor :_is_logging_enabled
+    end
+
+    # @return [bool] is logging enabled
+    attr_reader :_is_logging_enabled
+
+    class << self;
+      # The location that the message was from
+      private
+      attr_accessor :message_location
+    end
+
+    # @return [string] message location
+    attr_reader :message_location
+
+    # private class attributes
+
+    class << self;
+      # Is file open flag
+      private
+      attr_accessor :_is_file_open
+    end
+
+    class << self;
+      # File used for the log file
+      private
+      attr_accessor :logging_file
+    end
+
+    # public instance methods
 
     # Set logging on and off
     # @param flag [bool] switch for on or off
@@ -63,7 +101,7 @@ class GunnyLog
       end
     end
 
-    # Open the logfile with path, name, and extention
+    # Open the logfile with path, name, and extension
     # @param pathname [string] path of the logfile
     # @param filename [string] name of the logfile
     # @param extension [string] extension of the logfile
@@ -119,29 +157,8 @@ class GunnyLog
         message(loc, formatted)
     end
 
+    # private instance methods
     private
-
-    include Singleton
-
-    class << self;
-      # Logging off and on flag
-      attr_accessor :_is_logging_enabled
-    end
-
-    class << self;
-      # Location message was logged from
-      attr_accessor :message_location
-    end
-
-    class << self;
-      # Is file open flag
-      attr_accessor :_is_file_open
-    end
-
-    class << self;
-      # File used for the log file
-      attr_accessor :logging_file
-    end
 
     # initailize
     def initialize

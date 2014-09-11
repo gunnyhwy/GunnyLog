@@ -2,8 +2,8 @@
 require 'GunnyLog'
 
 puts GunnyLog::VERSION
-#puts GunnyLog::DESC_VERSION
 #log = GunnyLog.new()
+
 
 # Test for screen logging, one liners
 GunnyLog.instance.message('Error Catcher', 'Testing again') 
@@ -17,6 +17,9 @@ GunnyLog.instance.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gun
 GunnyLog.instance.formatted_message_vars('Main', 'name: %s', 'Gunny')
 GunnyLog.instance.set_output_stdout
 GunnyLog.instance.msg('Testing new method')
+
+#puts 'Logging check: ' + GunnyLog.instance._is_logging_enabled
+puts 'Message location: ' + GunnyLog.instance.message_location
 
 
 # Test for screen logging
@@ -48,6 +51,9 @@ logs.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 
 logs.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 logs.formatted_message_vars('Main', 'name: %s', 'Gunny')
+
+#puts 'Logging check: ' + logs._is_logging_enabled
+puts 'Message location: ' + logs.message_location
 
 
 #Test for file logging
