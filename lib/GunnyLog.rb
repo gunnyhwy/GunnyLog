@@ -16,27 +16,27 @@ class GunnyLog
     # Set logging on and off
     # @param flag [bool] switch for on or off
     def set_logging_enabled(flag)
-      @onoffswitch = flag
+      @_is_logging_enabled = flag
     end
 
     # Set logging on and off
     # @deprecated Use {#set_logging_enabled} instead
     # @param flag [bool] switch for on or off
     def set_switch(flag)
-        @onoffswitch = flag
+        @_is_logging_enabled = flag
     end
 
-    # Set message was logged from location
-    # @param loc [string] location name
+    # Set message was logged from message_location
+    # @param loc [string] message_location name
     def set_message_location(loc)
-      @location = loc
+      @message_location = loc
     end
 
-    # Set message was logged from location
+    # Set message was logged from message_location
     # @deprecated Use {#set_message_location} instead
-    # @param loc [string] location name
+    # @param loc [string] message_location name
     def set_location(loc)
-        @location = loc
+        @message_location = loc
     end
 
     # Set output to STDOUT, default
@@ -44,7 +44,7 @@ class GunnyLog
       if @_is_file_open
         self.close
       end
-      @outfile = STDOUT
+      @logging_file = STDOUT
     end
 
     # Set output to STDERR
@@ -52,20 +52,20 @@ class GunnyLog
       if @_is_file_open
         self.close
       end
-      @outfile = STDERR
+      @logging_file = STDERR
     end
 
     # Open the logfile
     # @param filename [string] name of the logfile
     def open(filename = 'gunnylog.log')
       begin
-        @outfile = File.open(filename, 'a+')
+        @logging_file = File.open(filename, 'a+')
         @_is_file_open = true
       rescue SystemCallError
         raise GunnyLogException.new('Error opening file: ' + filename)
         #STDERR.puts 'GunnyLog: Error opening file: ' + filename + ' using stdout'
         #@_is_file_open = false
-        #@outfile = STDOUT
+        #@logging_file = STDOUT
       end
     end
 
@@ -95,13 +95,13 @@ class GunnyLog
     # Close the logfile
     def close
       begin
-        @outfile.close
+        @logging_file.close
       rescue SystemCallError
         raise GunnyLogException.new('Error closing file')
         #STDERR.puts 'GunnyLog: Error closing file'
       end
       @_is_file_open = false
-      @outfile = STDOUT
+      @logging_file = STDOUT
     end
 
     # Write message to file
@@ -111,18 +111,18 @@ class GunnyLog
     end
 
     # Write message to file
-    # @param loc [string] message location, optional
+    # @param loc [string] message message_location, optional
     # @param msg [string] message string
     def message(loc = nil, msg)
       #if @_is_file_open
-        write_msg(@outfile, loc, msg)
+        write_msg(@logging_file, loc, msg)
       #else
       #  write_msg(STDOUT, loc, msg)
       #end
     end
 
     # Write formatted message with single arg or array of args
-    # @param loc [string] message location, optional
+    # @param loc [string] message message_location, optional
     # @param msg [string] message format string
     # @param args [arg or array of args]
     def formatted_message(loc = nil, msg, args)
@@ -131,7 +131,7 @@ class GunnyLog
     end
 
     # Write formatted message with variable number of args
-    # @param loc [string] message location
+    # @param loc [string] message message_location
     # @param msg [string] message format string
     # @param args [variable number of args]
     def formatted_message_vars(loc, msg, *args)
@@ -143,43 +143,43 @@ class GunnyLog
 
     include Singleton
 
-    # logging off and on flag
     class << self;
-      attr_accessor :onoffswitch
+      # Logging off and on flag
+      attr_accessor :_is_logging_enabled
     end
 
-    # location message was logged from
     class << self;
-      attr_accessor :location
+      # Location message was logged from
+      attr_accessor :message_location
     end
 
-    # is file open flag
     class << self;
+      # Is file open flag
       attr_accessor :_is_file_open
     end
 
-    # log file
     class << self;
-      attr_accessor :outfile
+      # File used for the log file
+      attr_accessor :logging_file
     end
 
     # initailize
     def initialize
-      @onoffswitch = true
-      @location = 'MainMethod'
+      @_is_logging_enabled = true
+      @message_location = 'MainMethod'
       @_is_file_open = false
-      @outfile = STDOUT
+      @logging_file = STDOUT
     end
 
     # write the msg
     def write_msg(output, loc, msg)
         if loc == nil
-          loc = @location
+          loc = @message_location
         else
           # new, not sure
-          @location = loc
+          @message_location = loc
         end
-        if @onoffswitch
+        if @_is_logging_enabled
             output.puts "#{date_str}|#{$0}|#{loc}|#{msg}"
         end
     end

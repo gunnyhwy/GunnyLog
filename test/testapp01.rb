@@ -2,7 +2,7 @@
 require 'GunnyLog'
 
 puts GunnyLog::VERSION
-puts GunnyLog::DESC_VERSION
+#puts GunnyLog::DESC_VERSION
 
 
 # Test for screen logging, one liners
