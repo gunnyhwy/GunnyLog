@@ -4,6 +4,7 @@ require 'GunnyLog/exceptions'
 require 'singleton'
 require 'date'
 
+
 # GunnyLog logs messages to stdout, stderr, or a file. It defaults
 # to stdout. GunnyLog is a singleton and uses the instance method.
 # For example you can use GunnyLog.instance.msg('Error message')
@@ -17,11 +18,11 @@ class GunnyLog
     class << self;
       # Logging flag on and off (default=on)
       private
-      attr_accessor :_is_logging_enabled
+      attr_accessor :logging_enabled
     end
 
     # @return [bool] is logging enabled
-    attr_reader :_is_logging_enabled
+    attr_reader :logging_enabled
 
     class << self;
       # The location that the message was from
@@ -37,7 +38,7 @@ class GunnyLog
     class << self;
       # Is file open flag
       private
-      attr_accessor :_is_file_open
+      attr_accessor :file_open
     end
 
     class << self;
@@ -51,14 +52,14 @@ class GunnyLog
     # Set logging on and off
     # @param flag [bool] switch for on or off
     def set_logging_enabled(flag)
-      @_is_logging_enabled = flag
+      @logging_enabled = flag
     end
 
     # Set logging on and off
     # @deprecated Use {#set_logging_enabled} instead
     # @param flag [bool] switch for on or off
     def set_switch(flag)
-        @_is_logging_enabled = flag
+        @logging_enabled = flag
     end
 
     # Set message was logged from message_location
@@ -76,7 +77,7 @@ class GunnyLog
 
     # Set output to STDOUT, default
     def set_output_stdout
-      if @_is_file_open
+      if @file_open
         self.close
       end
       @logging_file = STDOUT
@@ -84,7 +85,7 @@ class GunnyLog
 
     # Set output to STDERR
     def set_output_stderr
-      if @_is_file_open
+      if @file_open
         self.close
       end
       @logging_file = STDERR
@@ -95,9 +96,9 @@ class GunnyLog
     def open(filename = 'gunnylog.log')
       begin
         @logging_file = File.open(filename, 'a+')
-        @_is_file_open = true
-      rescue SystemCallError
-        raise GunnyLogException.new('Error opening file: ' + filename)
+        @file_open = true
+      rescue SystemCallError => exc
+        handle_exception(exc)
       end
     end
 
@@ -105,9 +106,7 @@ class GunnyLog
     # @param pathname [string] path of the logfile
     # @param filename [string] name of the logfile
     # @param extension [string] extension of the logfile
-    def open_with_info(pathname = nil,
-                       filename = 'gunnylog',
-                       extension = 'log')
+    def open_file(pathname = nil, filename = 'gunnylog', extension = 'log')
       if pathname == nil
         self.open(filename  + '.' + extension)
       else
@@ -115,24 +114,33 @@ class GunnyLog
       end
     end
 
+    # Open the logfile with path, name, and extension
+    # @param pathname [string] path of the logfile
+    # @param filename [string] name of the logfile
+    # @param extension [string] extension of the logfile
+    # @deprecated Use {#open_file} instead
+    def open_with_info(pathname = nil, filename = 'gunnylog', extension = 'log')
+      self.open_file(pathname, filename, extension)
+    end
+
     # Close the logfile
     def close
       begin
         @logging_file.close
-        @_is_file_open = false
+        @file_open = false
         @logging_file = STDOUT
-      rescue SystemCallError
-        raise GunnyLogException.new('Error closing file')
+      rescue SystemCallError => exc
+        handle_exception(exc)
       end
     end
 
-    # Write message to file
+    # Write message to logfile
     # @param msg [string] message string
     def msg(msg)
       message(nil, msg)
     end
 
-    # Write message to file
+    # Write message to logfile
     # @param loc [string] message message_location, optional
     # @param msg [string] message string
     def message(loc = nil, msg)
@@ -143,7 +151,7 @@ class GunnyLog
     # @param loc [string] message message_location, optional
     # @param msg [string] message format string
     # @param args [arg or array of args]
-    def formatted_message(loc = nil, msg, args)
+    def message_formatted(loc = nil, msg, args)
         formatted = sprintf(msg, *args)
         message(loc, formatted)
     end
@@ -152,9 +160,41 @@ class GunnyLog
     # @param loc [string] message message_location
     # @param msg [string] message format string
     # @param args [variable number of args]
-    def formatted_message_vars(loc, msg, *args)
+    def message_formatted_vars(loc, msg, *args)
         formatted = sprintf(msg, *args)
         message(loc, formatted)
+    end
+
+    # Write exception to logfile
+    # @param exc [exception] exception to log
+    def msg_exception(exc)
+      write_msg(@logging_file, @message_location, exc.message)
+    end
+
+    # Write exception to logfile
+    # @param exc [exception] exception to log
+    def message_exception(loc = nil, exc)
+      write_msg(@logging_file, loc, exc.message)
+    end
+
+    # Write formatted message with single arg or array of args
+    # @param loc [string] message message_location, optional
+    # @param msg [string] message format string
+    # @param args [arg or array of args]
+    # @deprecated Use {#message_formatted} instead
+    def formatted_message(loc = nil, msg, args)
+      formatted = sprintf(msg, *args)
+      message(loc, formatted)
+    end
+
+    # Write formatted message with variable number of args
+    # @param loc [string] message message_location
+    # @param msg [string] message format string
+    # @param args [variable number of args]
+    # @deprecated Use {#message_formatted_vars} instead
+    def formatted_message_vars(loc, msg, *args)
+      formatted = sprintf(msg, *args)
+      message(loc, formatted)
     end
 
     # private instance methods
@@ -162,9 +202,9 @@ class GunnyLog
 
     # initailize
     def initialize
-      @_is_logging_enabled = true
+      @logging_enabled = true
       @message_location = 'MainMethod'
-      @_is_file_open = false
+      @file_open = false
       @logging_file = STDOUT
     end
 
@@ -175,7 +215,7 @@ class GunnyLog
         else
           @message_location = loc
         end
-        if @_is_logging_enabled
+        if @logging_enabled
             output.puts "#{date_str}|#{$0}|#{loc}|#{msg}"
         end
     end
@@ -184,6 +224,12 @@ class GunnyLog
     def date_str
         d = DateTime.now
         d.strftime('%m/%d/%Y|%I:%M:%S%p')
+    end
+
+    # log exception and raise
+    def handle_exception(exc)
+      self.message_exception('***GunnyLog***', exc)
+      raise GunnyLogException.new(exc.message)
     end
 
 end

@@ -1,5 +1,5 @@
-require 'GunnyLog/version'
-#require 'GunnyLog'
+#require 'GunnyLog/version'
+require 'GunnyLog'
 
 
 Gem::Specification.new do |s|

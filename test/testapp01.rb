@@ -7,18 +7,18 @@ puts GunnyLog::VERSION
 
 # Test for screen logging, one liners
 GunnyLog.instance.message('Error Catcher', 'Testing again') 
-GunnyLog.instance.formatted_message('Error Catcher', 'Testing again = %s', 'Gunny')
-GunnyLog.instance.formatted_message('Error Catcher', 'Testing number = %d', 42)
-GunnyLog.instance.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
+GunnyLog.instance.message_formatted('Error Catcher', 'Testing again = %s', 'Gunny')
+GunnyLog.instance.message_formatted('Error Catcher', 'Testing number = %d', 42)
+GunnyLog.instance.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 
 GunnyLog.instance.set_output_stderr
-GunnyLog.instance.formatted_message('name: %s', 'Gunny')
-GunnyLog.instance.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
-GunnyLog.instance.formatted_message_vars('Main', 'name: %s', 'Gunny')
+GunnyLog.instance.message_formatted('name: %s', 'Gunny')
+GunnyLog.instance.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
+GunnyLog.instance.message_formatted_vars('Main', 'name: %s', 'Gunny')
 GunnyLog.instance.set_output_stdout
 GunnyLog.instance.msg('Testing new method')
 
-#puts 'Logging check: ' + GunnyLog.instance._is_logging_enabled
+#puts 'Logging check: ' + GunnyLog.instance.logging_enabled
 puts 'Message location: ' + GunnyLog.instance.message_location
 
 
@@ -45,14 +45,14 @@ logs.message('init','Testing GunnyScreenLog 07')
 logs.message('read','Testing GunnyScreenLog 08')
 logs.message('close','Testing GunnyScreenLog 09')
 
-logs.formatted_message('Error Catcher', 'Testing again = %s', 'Gunny')
-logs.formatted_message('Error Catcher', 'Testing number = %d', 42)
-logs.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
+logs.message_formatted('Error Catcher', 'Testing again = %s', 'Gunny')
+logs.message_formatted('Error Catcher', 'Testing number = %d', 42)
+logs.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 
-logs.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
-logs.formatted_message_vars('Main', 'name: %s', 'Gunny')
+logs.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
+logs.message_formatted_vars('Main', 'name: %s', 'Gunny')
 
-#puts 'Logging check: ' + logs._is_logging_enabled
+#puts 'Logging check: ' + logs.logging_enabled
 puts 'Message location: ' + logs.message_location
 
 
@@ -78,12 +78,12 @@ logf.message('init','Testing GunnyFileLog 07')
 logf.message('read','Testing GunnyFileLog 08')
 logf.message('close','Testing GunnyFileLog 09')
 
-logf.formatted_message('Error Catcher', 'Testing again = %s', 'Gunny')
-logf.formatted_message('Error Catcher', 'Testing number = %d', 42)
-logf.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
+logf.message_formatted('Error Catcher', 'Testing again = %s', 'Gunny')
+logf.message_formatted('Error Catcher', 'Testing number = %d', 42)
+logf.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 
-logf.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
-logf.formatted_message_vars('Main', 'name: %s', 'Gunny')
+logf.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
+logf.message_formatted_vars('Main', 'name: %s', 'Gunny')
 
 logf.msg('Testing new method')
 logf.close
@@ -96,7 +96,7 @@ logf = GunnyLog.instance
 #logf.open('zlog2.log')
 #logf.open_with_info(nil, 'zlog2', 'log')
 #logf.open_with_info('testing', 'zlog2', 'log')
-logf.open_with_info('logs', 'zlog2', 'log')
+logf.open_file('logs', 'zlog2', 'log')
 
 logf.message('Testing GunnyFileLog 01')
 logf.set_switch(false)
@@ -115,12 +115,12 @@ logf.message('init','Testing GunnyFileLog 07')
 logf.message('read','Testing GunnyFileLog 08')
 logf.message('close','Testing GunnyFileLog 09')
 
-logf.formatted_message('Error Catcher', 'Testing again = %s', 'Gunny')
-logf.formatted_message('Error Catcher', 'Testing number = %d', 42)
-logf.formatted_message('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
+logf.message_formatted('Error Catcher', 'Testing again = %s', 'Gunny')
+logf.message_formatted('Error Catcher', 'Testing number = %d', 42)
+logf.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 
-logf.formatted_message_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
-logf.formatted_message_vars('Main', 'name: %s', 'Gunny')
+logf.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
+logf.message_formatted_vars('Main', 'name: %s', 'Gunny')
 
 logf.msg('Testing new method')
 logf.close
