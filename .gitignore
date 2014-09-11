@@ -11,3 +11,4 @@ src/.idea
 projectFilesBackup
 .yardoc/
 doc/
+test/testapp02.rb
