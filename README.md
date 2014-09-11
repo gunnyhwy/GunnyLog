@@ -23,11 +23,11 @@ Or install it yourself as:
 ### Require GunnyLog
 require 'GunnyLog'
 
-### Test for screen logging, one liners
+### Example of screen logging, one liners
 GunnyLog.instance.message('Main:Runloop', 'Error loading preferences')<br> 
 GunnyLog.instance.message_formatted('TestClass:GetUrl', 'Error number = %d', 40)<br>
 
-### Test for screen logging
+### Example of screen logging
 logs = GunnyLog.instance<br>
 
 logs.message('Testing GunnyScreenLog 01')<br>
@@ -46,7 +46,7 @@ logs.message('sort','Testing GunnyScreenLog 03')<br>
 logs.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])<br>
 logs.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')<br>
 
-### Test for file logging
+### Example of file logging
 logf = GunnyLogFile.instance<br>
 logf.open('testapp.log')<br>
 
