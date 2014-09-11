@@ -235,6 +235,6 @@ class GunnyLog
 end
 
 
-# @deprecated Use {#GunnyLog} instead
+# @deprecated Use {GunnyLog} instead
 class GunnyLogFile < GunnyLog
 end

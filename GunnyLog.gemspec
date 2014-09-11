@@ -1,7 +1,6 @@
 #require 'GunnyLog/version'
 require 'GunnyLog'
 
-
 Gem::Specification.new do |s|
   s.name          = 'GunnyLog'
   s.version       = GunnyLog::VERSION
@@ -12,7 +11,8 @@ Gem::Specification.new do |s|
   s.email         = 'gunnyhwy21@yahoo.com'
   s.files         = ['lib/GunnyLog.rb',
                      'lib/GunnyLog/version.rb',
-                     'lib/GunnyLog/exceptions.rb']
+                     'lib/GunnyLog/exceptions.rb',
+                     'README.md']
   s.homepage      = 'http://rubygems.org/gems/GunnyLog'
   s.license       = 'GPL v3'
 end
