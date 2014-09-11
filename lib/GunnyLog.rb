@@ -6,12 +6,9 @@ require 'date'
 
 
 # GunnyLog logs messages to stdout(default), stderr, or a file
+# GunnyLog is a singleton and uses the instance method. Examples:
+# log = GunnyLog.instance or GunnyLog.instance.msg('Error message')
 class GunnyLog
-
-    # Singleton instance method
-    #def self.instance
-    #  @@instance ||= new
-    #end
 
     # Set logging on and off
     # @param flag [bool] switch for on or off
@@ -63,9 +60,6 @@ class GunnyLog
         @_is_file_open = true
       rescue SystemCallError
         raise GunnyLogException.new('Error opening file: ' + filename)
-        #STDERR.puts 'GunnyLog: Error opening file: ' + filename + ' using stdout'
-        #@_is_file_open = false
-        #@logging_file = STDOUT
       end
     end
 
@@ -76,15 +70,6 @@ class GunnyLog
     def open_with_info(pathname = nil,
                        filename = 'gunnylog',
                        extension = 'log')
-
-      #if pathname == nil
-      #  puts 'pathname  = nil'
-      #else
-      #  puts 'pathname  = ' + pathname
-      #end
-      #puts 'filename  = ' + filename
-      #puts 'extension = ' + extension
-
       if pathname == nil
         self.open(filename  + '.' + extension)
       else
@@ -96,12 +81,11 @@ class GunnyLog
     def close
       begin
         @logging_file.close
+        @_is_file_open = false
+        @logging_file = STDOUT
       rescue SystemCallError
         raise GunnyLogException.new('Error closing file')
-        #STDERR.puts 'GunnyLog: Error closing file'
       end
-      @_is_file_open = false
-      @logging_file = STDOUT
     end
 
     # Write message to file
@@ -114,11 +98,7 @@ class GunnyLog
     # @param loc [string] message message_location, optional
     # @param msg [string] message string
     def message(loc = nil, msg)
-      #if @_is_file_open
         write_msg(@logging_file, loc, msg)
-      #else
-      #  write_msg(STDOUT, loc, msg)
-      #end
     end
 
     # Write formatted message with single arg or array of args
@@ -176,7 +156,6 @@ class GunnyLog
         if loc == nil
           loc = @message_location
         else
-          # new, not sure
           @message_location = loc
         end
         if @_is_logging_enabled
@@ -189,7 +168,7 @@ class GunnyLog
         d = DateTime.now
         d.strftime('%m/%d/%Y|%I:%M:%S%p')
     end
-    
+
 end
 
 

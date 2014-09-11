@@ -1,4 +1,6 @@
 require 'GunnyLog/version'
+#require 'GunnyLog'
+
 
 Gem::Specification.new do |s|
   s.name          = 'GunnyLog'

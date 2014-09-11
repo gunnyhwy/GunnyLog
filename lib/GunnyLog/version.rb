@@ -1,4 +1,3 @@
 class GunnyLog
-  VERSION = '1.0.7'
-  #DESC_VERSION = 'GunnyLog Version: ' + GunnyLog::VERSION
+  VERSION = '1.0.8'
 end

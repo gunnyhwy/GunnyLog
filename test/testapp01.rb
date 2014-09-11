@@ -3,7 +3,7 @@ require 'GunnyLog'
 
 puts GunnyLog::VERSION
 #puts GunnyLog::DESC_VERSION
-
+#log = GunnyLog.new()
 
 # Test for screen logging, one liners
 GunnyLog.instance.message('Error Catcher', 'Testing again') 
