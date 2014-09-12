@@ -14,7 +14,7 @@ class GunnyLog
 
     private
 
-    VERSION = '1.1.3'
+    # local debug messages
     DEBUG_FLAG = false
 
     # public class attributes
@@ -240,4 +240,5 @@ end
 
 # @deprecated Use {GunnyLog} instead
 class GunnyLogFile < GunnyLog
+
 end
