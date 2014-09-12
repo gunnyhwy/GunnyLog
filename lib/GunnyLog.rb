@@ -1,6 +1,6 @@
 # GunnyLog class
-require 'GunnyLog/version'
 require 'GunnyLog/exceptions'
+require 'GunnyLog/severity'
 require 'singleton'
 require 'date'
 
@@ -13,41 +13,31 @@ class GunnyLog
 
     include Singleton
 
-    # public class attributes
+    private
 
-    class << self;
-      # Logging flag on and off (default=on)
-      private
-      attr_accessor :logging_enabled
-    end
+    VERSION = '1.1.2'
+    DEBUG_FLAG = false
+
+    # public class attributes
+    public
 
     # @return [bool] is logging enabled
     attr_reader :logging_enabled
-
-    class << self;
-      # The location that the message was from
-      private
-      attr_accessor :message_location
-    end
 
     # @return [string] message location
     attr_reader :message_location
 
     # private class attributes
+    private
 
-    class << self;
-      # Is file open flag
-      private
-      attr_accessor :file_open
-    end
+    # Is file open flag
+    attr_accessor :file_open
 
-    class << self;
-      # File used for the log file
-      private
-      attr_accessor :logging_file
-    end
+    # File used for the log file
+    attr_accessor :logging_file
 
     # public instance methods
+    public
 
     # Set logging on and off
     # @param flag [bool] switch for on or off
@@ -59,7 +49,7 @@ class GunnyLog
     # @deprecated Use {#set_logging_enabled} instead
     # @param flag [bool] switch for on or off
     def set_switch(flag)
-        @logging_enabled = flag
+      @logging_enabled = flag
     end
 
     # Set message was logged from message_location
@@ -200,9 +190,12 @@ class GunnyLog
     # private instance methods
     private
 
-    # initailize
+    # initialize
     def initialize
+      local_debug('initialize')
       @logging_enabled = true
+      @logging_severity = GunnyLogSeverity::DEBUG
+      local_debug('initialize', sprintf('Log level = %d',@logging_severity) )
       @message_location = 'MainMethod'
       @file_open = false
       @logging_file = STDOUT
@@ -210,26 +203,37 @@ class GunnyLog
 
     # write the msg
     def write_msg(output, loc, msg)
-        if loc == nil
-          loc = @message_location
-        else
-          @message_location = loc
-        end
-        if @logging_enabled
-            output.puts "#{date_str}|#{$0}|#{loc}|#{msg}"
-        end
+      if loc == nil
+        loc = @message_location
+      else
+        @message_location = loc
+      end
+      if @logging_enabled
+          output.puts "#{date_str}|#{$0}|#{loc}|#{msg}"
+      end
     end
 
     # get the date time stamp
     def date_str
-        d = DateTime.now
-        d.strftime('%m/%d/%Y|%I:%M:%S%p')
+      d = DateTime.now
+      d.strftime('%m/%d/%Y|%I:%M:%S%p')
     end
 
     # log exception and raise
     def handle_exception(exc)
       self.message_exception('***GunnyLog***', exc)
       raise GunnyLogException.new(exc.message)
+    end
+
+    # used for debugging GunnyLog
+    def local_debug(loc, msg = nil)
+      if DEBUG_FLAG
+        if msg == nil
+          puts 'GunnyLog::' + loc
+        else
+          puts 'GunnyLog::' + loc + '|' + msg
+        end
+      end
     end
 
 end

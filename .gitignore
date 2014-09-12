@@ -1,14 +1,10 @@
 # ignore files
 *.log
-*.html
-*.js
-src/zsaves
-src/.idea
-.idea
-*.gem
-*.gemspec
 *.txt
-projectFilesBackup
+*.gem
+*.sh
+.idea
+src/.idea
 .yardoc/
 doc/
 test/testapp02.rb
