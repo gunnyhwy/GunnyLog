@@ -1,6 +1,5 @@
 # GunnyLog class
 require 'GunnyLog/exceptions'
-require 'GunnyLog/severity'
 require 'singleton'
 require 'date'
 
@@ -15,7 +14,7 @@ class GunnyLog
 
     private
 
-    VERSION = '1.1.2'
+    VERSION = '1.1.3'
     DEBUG_FLAG = false
 
     # public class attributes
@@ -192,10 +191,10 @@ class GunnyLog
 
     # initialize
     def initialize
-      local_debug('initialize')
+      #local_debug('initialize')
       @logging_enabled = true
-      @logging_severity = GunnyLogSeverity::DEBUG
-      local_debug('initialize', sprintf('Log level = %d',@logging_severity) )
+      #@logging_severity = GunnyLogSeverity::DEBUG
+      #local_debug('initialize', sprintf('Log level = %d',@logging_severity) )
       @message_location = 'MainMethod'
       @file_open = false
       @logging_file = STDOUT
