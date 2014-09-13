@@ -24,10 +24,13 @@ class GunnyLog
     attr_reader :logging_enabled
 
     # @return [string] message location
-    attr_reader :message_location
+    attr_reader :logging_location
 
     # @return [int] logging level
     attr_reader :logging_level
+
+    # @return [string] message location
+    #attr_reader :message_location
 
     # private class attributes
     private
@@ -53,10 +56,17 @@ class GunnyLog
         @logging_level = level
       end
 
-    # Set message was logged from message_location
-    # @param loc [string] message_location name
+    # Set message was logged from logging location
+    # @param loc [string] logging location name
+    def set_logging_location(loc)
+      @logging_location = loc
+    end
+
+    # Set message was logged from message location
+    # @param loc [string] message location name
+    # @deprecated Use {#set_logging_location} instead
     def set_message_location(loc)
-      @message_location = loc
+      @logging_location = loc
     end
 
     # Set output to STDOUT, default
@@ -116,14 +126,14 @@ class GunnyLog
     end
 
     # Write message to logfile
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message string
     def message(loc = nil, msg)
         write_msg(@logging_file, loc, msg)
     end
 
     # Write formatted message with single arg or array of args
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message format string
     # @param args [arg or array of args]
     def message_formatted(loc = nil, msg, args)
@@ -132,7 +142,7 @@ class GunnyLog
     end
 
     # Write formatted message with variable number of args
-    # @param loc [string] message message_location
+    # @param loc [string] message logging location
     # @param msg [string] message format string
     # @param args [variable number of args]
     def message_formatted_vars(loc, msg, *args)
@@ -143,7 +153,7 @@ class GunnyLog
     # Write exception to logfile
     # @param exc [exception] exception to log
     def msg_exception(exc)
-      write_msg(@logging_file, @message_location, exc.message)
+      write_msg(@logging_file, @logging_location, exc.message)
     end
 
     # Write exception to logfile
@@ -153,42 +163,42 @@ class GunnyLog
     end
 
     # Write DEBUG message to logfile
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message format string
     def log_debug(loc = nil, msg)
       log(DEBUG, loc, msg)
     end
 
     # Write INFO message to logfile
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message format string
     def log_info(loc = nil, msg)
       log(INFO, loc, msg)
     end
 
     # Write WARNING message to logfile
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message format string
     def log_warning(loc = nil, msg)
       log(WARNING, loc, msg)
     end
 
     # Write ERROR message to logfile
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message format string
     def log_error(loc = nil, msg)
       log(ERROR, loc, msg)
     end
 
     # Write FATAL message to logfile
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message format string
     def log_fatal(loc = nil, msg)
       log(FATAL, loc, msg)
     end
 
     # Write UNKOWN message to logfile
-    # @param loc [string] message message_location, optional
+    # @param loc [string] message logging location, optional
     # @param msg [string] message format string
     def log_unknown(loc = nil, msg)
       log(UNKNOWN, loc, msg)
@@ -204,7 +214,7 @@ class GunnyLog
       @logging_level = DEBUG
       #@logging_severity = GunnyLogSeverity::DEBUG
       #local_debug('initialize', sprintf('Log level = %d',@logging_severity) )
-      @message_location = 'MainMethod'
+      @logging_location = 'MainMethod'
       @file_open = false
       @logging_file = STDOUT
     end
@@ -212,9 +222,9 @@ class GunnyLog
     # write the msg
     def write_msg(output, loc, msg)
       if loc == nil
-        loc = @message_location
+        loc = @logging_location
       else
-        @message_location = loc
+        @logging_location = loc
       end
       if @logging_enabled
           output.puts "#{date_str}|#{$0}|#{loc}|#{msg}"
@@ -223,9 +233,9 @@ class GunnyLog
 
     def log(sev, loc, msg)
       if loc == nil
-        loc = @message_location
+        loc = @logging_location
       else
-        @message_location = loc
+        @logging_location = loc
       end
       if @logging_enabled and sev >= @logging_level
         @logging_file.puts "#{date_str}|#{$0}|#{level_string(sev)}|#{loc}|#{msg}"
