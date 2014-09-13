@@ -28,7 +28,7 @@ logs.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Dev
 
 
 #Test for file logging
-logf = GunnyLogFile.instance
+logf = GunnyLog.instance
 logf.open('testapp.log')
 
 logf.message('Testing GunnyFileLog 01')
@@ -48,3 +48,13 @@ logf.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])
 logf.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')
 
 logf.close
+
+# Test for logging with logging level
+g = GunnyLog.instance
+g.set_logging_level(GunnyLog::FATAL)
+g.log_fatal('main', 'error message')
+g.log_error('main', 'error message')
+g.log_info('main', 'error message')
+g.log_warning('main', 'error message')
+g.log_unknown('main', 'error message')
+g.log_debug('main', 'error message')

@@ -1,8 +1,8 @@
 # GunnyLog class
 require 'GunnyLog/exceptions'
+require 'GunnyLog/severity'
 require 'singleton'
 require 'date'
-
 
 # GunnyLog logs messages to stdout, stderr, or a file. It defaults
 # to stdout. GunnyLog is a singleton and uses the instance method.
@@ -26,6 +26,9 @@ class GunnyLog
     # @return [string] message location
     attr_reader :message_location
 
+    # @return [int] logging level
+    attr_reader :logging_level
+
     # private class attributes
     private
 
@@ -44,24 +47,16 @@ class GunnyLog
       @logging_enabled = flag
     end
 
-    # Set logging on and off
-    # @deprecated Use {#set_logging_enabled} instead
-    # @param flag [bool] switch for on or off
-    def set_switch(flag)
-      @logging_enabled = flag
-    end
+    # Set logging level
+    # @param level [int] logging level
+      def set_logging_level(level)
+        @logging_level = level
+      end
 
     # Set message was logged from message_location
     # @param loc [string] message_location name
     def set_message_location(loc)
       @message_location = loc
-    end
-
-    # Set message was logged from message_location
-    # @deprecated Use {#set_message_location} instead
-    # @param loc [string] message_location name
-    def set_location(loc)
-        @message_location = loc
     end
 
     # Set output to STDOUT, default
@@ -101,15 +96,6 @@ class GunnyLog
       else
         self.open(pathname + '/' + filename  + '.' + extension)
       end
-    end
-
-    # Open the logfile with path, name, and extension
-    # @param pathname [string] path of the logfile
-    # @param filename [string] name of the logfile
-    # @param extension [string] extension of the logfile
-    # @deprecated Use {#open_file} instead
-    def open_with_info(pathname = nil, filename = 'gunnylog', extension = 'log')
-      self.open_file(pathname, filename, extension)
     end
 
     # Close the logfile
@@ -166,24 +152,46 @@ class GunnyLog
       write_msg(@logging_file, loc, exc.message)
     end
 
-    # Write formatted message with single arg or array of args
+    # Write DEBUG message to logfile
     # @param loc [string] message message_location, optional
     # @param msg [string] message format string
-    # @param args [arg or array of args]
-    # @deprecated Use {#message_formatted} instead
-    def formatted_message(loc = nil, msg, args)
-      formatted = sprintf(msg, *args)
-      message(loc, formatted)
+    def log_debug(loc = nil, msg)
+      log(DEBUG, loc, msg)
     end
 
-    # Write formatted message with variable number of args
-    # @param loc [string] message message_location
+    # Write INFO message to logfile
+    # @param loc [string] message message_location, optional
     # @param msg [string] message format string
-    # @param args [variable number of args]
-    # @deprecated Use {#message_formatted_vars} instead
-    def formatted_message_vars(loc, msg, *args)
-      formatted = sprintf(msg, *args)
-      message(loc, formatted)
+    def log_info(loc = nil, msg)
+      log(INFO, loc, msg)
+    end
+
+    # Write WARNING message to logfile
+    # @param loc [string] message message_location, optional
+    # @param msg [string] message format string
+    def log_warning(loc = nil, msg)
+      log(WARNING, loc, msg)
+    end
+
+    # Write ERROR message to logfile
+    # @param loc [string] message message_location, optional
+    # @param msg [string] message format string
+    def log_error(loc = nil, msg)
+      log(ERROR, loc, msg)
+    end
+
+    # Write FATAL message to logfile
+    # @param loc [string] message message_location, optional
+    # @param msg [string] message format string
+    def log_fatal(loc = nil, msg)
+      log(FATAL, loc, msg)
+    end
+
+    # Write UNKOWN message to logfile
+    # @param loc [string] message message_location, optional
+    # @param msg [string] message format string
+    def log_unknown(loc = nil, msg)
+      log(UNKNOWN, loc, msg)
     end
 
     # private instance methods
@@ -193,6 +201,7 @@ class GunnyLog
     def initialize
       #local_debug('initialize')
       @logging_enabled = true
+      @logging_level = DEBUG
       #@logging_severity = GunnyLogSeverity::DEBUG
       #local_debug('initialize', sprintf('Log level = %d',@logging_severity) )
       @message_location = 'MainMethod'
@@ -211,6 +220,18 @@ class GunnyLog
           output.puts "#{date_str}|#{$0}|#{loc}|#{msg}"
       end
     end
+
+    def log(sev, loc, msg)
+      if loc == nil
+        loc = @message_location
+      else
+        @message_location = loc
+      end
+      if @logging_enabled and sev >= @logging_level
+        @logging_file.puts "#{date_str}|#{$0}|#{level_string(sev)}|#{loc}|#{msg}"
+      end
+    end
+
 
     # get the date time stamp
     def date_str
@@ -234,11 +255,5 @@ class GunnyLog
         end
       end
     end
-
-end
-
-
-# @deprecated Use {GunnyLog} instead
-class GunnyLogFile < GunnyLog
 
 end
