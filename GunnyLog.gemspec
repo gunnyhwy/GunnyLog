@@ -1,9 +1,10 @@
 #require 'GunnyLog'
 
+
 Gem::Specification.new do |s|
   s.name          = 'GunnyLog'
-  s.version       = '1.1.4'
-  s.date          = '2014-09-12'
+  s.version       = '1.1.5'
+  s.date          = '2014-09-13'
   s.summary       = 'Ruby log file class'
   s.description   = 'Ruby class for logging to stdout, stderr, or a file'
   s.authors       = ['GunnyHwy']

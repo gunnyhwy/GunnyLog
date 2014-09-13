@@ -6,15 +6,22 @@ class GunnyLog
 
   public
 
+  # Log level DEBUG
   DEBUG = 0
+  # Log level INFO
   INFO = 1
+  # Log level WARNING
   WARNING = 2
+  # Log level ERROR
   ERROR = 3
+  # Log level FATAL
   FATAL = 4
+  # Log level UNKNOWN
   UNKNOWN = 5
 
   private
 
+  # get string for level
   def level_string(level)
     case level
       when 0

@@ -4,6 +4,7 @@ require 'GunnyLog/severity'
 require 'singleton'
 require 'date'
 
+
 # GunnyLog logs messages to stdout, stderr, or a file. It defaults
 # to stdout. GunnyLog is a singleton and uses the instance method.
 # For example you can use GunnyLog.instance.msg('Error message')

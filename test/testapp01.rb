@@ -49,12 +49,16 @@ logf.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Dev
 
 logf.close
 
+
 # Test for logging with logging level
 g = GunnyLog.instance
-g.set_logging_level(GunnyLog::FATAL)
+
+g.set_logging_level(GunnyLog::ERROR)
 g.log_fatal('main', 'error message')
 g.log_error('main', 'error message')
 g.log_info('main', 'error message')
+
+g.set_logging_level(GunnyLog::WARNING)
 g.log_warning('main', 'error message')
 g.log_unknown('main', 'error message')
 g.log_debug('main', 'error message')
