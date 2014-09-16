@@ -154,7 +154,8 @@ class GunnyLog
     # Write exception to logfile
     # @param exc [exception] exception to log
     def msg_exception(exc)
-      write_msg(@logging_file, @logging_location, exc.message)
+      #write_msg(@logging_file, @logging_location, exc.message)
+      message_exception(nil, exc)
     end
 
     # Write exception to logfile

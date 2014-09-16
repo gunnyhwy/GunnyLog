@@ -6,7 +6,7 @@ Ruby logfile class
 
 Add this line to your application's Gemfile:
 
-```ruby
+```
 gem 'GunnyLog'
 ```
 
@@ -26,98 +26,117 @@ require 'GunnyLog'
 ### Example of screen logging, one liners
 
 #### Sample code
-GunnyLog.instance.message('Main:Runloop', 'Error loading preferences')<br> 
-GunnyLog.instance.message_formatted('TestClass:GetUrl', 'Error number = %d', 40)<br>
+```
+GunnyLog.instance.message('Main:Runloop', 'Error loading preferences')
+GunnyLog.instance.message('Another Error loading preferences')
+
+GunnyLog.instance.message_formatted('TestClass:GetUrl', 'Error number = %d', errno)
+GunnyLog.instance.message_formatted('Error number = %d', errno2)
+```
 
 #### Sample output
-09/11/2014|03:33:58PM|testapp01.rb|Main:Runloop|Error loading preferences<br>
-09/11/2014|03:33:58PM|testapp01.rb|TestClass:GetUrl|Error number = 40<br>
+```
+09/16/2014|01:27:30PM|testapp01.rb|Main:Runloop|Error loading preferences
+09/16/2014|01:27:30PM|testapp01.rb|Main:Runloop|Another Error loading preferences
+09/16/2014|01:27:30PM|testapp01.rb|TestClass:GetUrl|Error number = 44
+09/16/2014|01:27:30PM|testapp01.rb|TestClass:GetUrl|Error number = 22
+```
 
 ### Example of screen logging
 
 #### Sample code
-logs = GunnyLog.instance<br>
+```
+logs = GunnyLog.instance
 
-logs.message('Testing GunnyScreenLog 01')<br>
-logs.set_logging_enabled(false)<br>
-logs.message('Testing GunnyScreenLog 02 OFF')<br>
-logs.set_logging_enabled(true)<br>
+logs.message('SomeMethod','Testing GunnyScreenLog 01')
+logs.set_logging_enabled(false)
+logs.message('Testing GunnyScreenLog 02 OFF')
+logs.set_logging_enabled(true)
 
-logs.set_message_location('init')<br>
-logs.message('Testing GunnyScreenLog 01')<br>
-logs.set_message_location('destroy')<br>
-logs.message('Testing GunnyScreenLog 02')<br>
+logs.set_message_location('init')
+logs.message('Testing GunnyScreenLog 01')
+logs.set_message_location('destroy')
+logs.message('Testing GunnyScreenLog 02')
 
-logs.message('read','Testing GunnyScreenLog 02')<br>
-logs.message('sort','Testing GunnyScreenLog 03')<br>
+logs.message('read','Testing GunnyScreenLog 02')
+logs.message('Testing GunnyScreenLog 03')
 
-logs.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])<br>
-logs.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')<br>
+logs.message_formatted('sort','name: %s, age: %d, job: %s', ['Gunny', errno, 'Developer'])
+logs.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', errno2, 'Developer')
+```
 
 #### Sample output
-09/11/2014|03:33:58PM|testapp01.rb|TestClass:GetUrl|Testing GunnyScreenLog 01<br>
-09/11/2014|03:33:58PM|testapp01.rb|init|Testing GunnyScreenLog 01<br>
-09/11/2014|03:33:58PM|testapp01.rb|destroy|Testing GunnyScreenLog 02<br>
-09/11/2014|03:33:58PM|testapp01.rb|read|Testing GunnyScreenLog 02<br>
-09/11/2014|03:33:58PM|testapp01.rb|sort|Testing GunnyScreenLog 03<br>
-09/11/2014|03:33:58PM|testapp01.rb|sort|name: Gunny, age: 42, job: Developer<br>
-09/11/2014|03:33:58PM|testapp01.rb|sort|name: Gunny, age: 42, job: Developer<br>
-
+```
+09/16/2014|01:43:35PM|testapp01.rb|SomeMethod|Testing GunnyScreenLog 01
+09/16/2014|01:43:35PM|testapp01.rb|init|Testing GunnyScreenLog 01
+09/16/2014|01:43:35PM|testapp01.rb|destroy|Testing GunnyScreenLog 02
+09/16/2014|01:43:35PM|testapp01.rb|read|Testing GunnyScreenLog 02
+09/16/2014|01:43:35PM|testapp01.rb|read|Testing GunnyScreenLog 03
+09/16/2014|01:43:35PM|testapp01.rb|sort|name: Gunny, age: 42, job: Developer
+09/16/2014|01:43:35PM|testapp01.rb|sort|name: Gunny, age: 22, job: Developer
+```
 
 ### Example of file logging
 
 #### Sample code
-logf = GunnyLogFile.instance<br>
-logf.open('testapp.log')<br>
+```
+logf = GunnyLog.instance
+logf.open('testapp.log')
 
-logf.message('Testing GunnyFileLog 01')<br>
-logf.set_logging_enabled(false)<br>
-logf.message('Testing GunnyFileLog 02 OFF')<br>
-logf.set_logging_enabled(true)<br>
+logf.message('init', 'Testing GunnyFileLog 01')
+logf.set_logging_enabled(false)
+logf.message('Testing GunnyFileLog 02 OFF')
+logf.set_logging_enabled(true)
 
-logf.set_message_location('init')<br>
-logf.message('Testing GunnyFileLog 01')<br>
-logf.set_message_location('destroy')<br>
-logf.message('Testing GunnyFileLog 02')<br>
+logf.set_message_location('setup')
+logf.message('Testing GunnyFileLog 01')
+logf.set_message_location('destroy')
+logf.message('Testing GunnyFileLog 02')
 
-logf.message('read','Testing GunnyFileLog 02')<br>
-logf.message('sort','Testing GunnyFileLog 03')<br>
+logf.message('read','Testing GunnyFileLog 02')
+logf.message('Testing GunnyFileLog 03')
 
-logf.message_formatted('name: %s, age: %d, job: %s', ['Gunny', 42, 'Developer'])<br>
-logf.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', 42, 'Developer')<br>
+logf.message_formatted('sort', 'name: %s, age: %d, job: %s', ['Gunny', errno, 'Developer'])
+logf.message_formatted_vars(nil, 'name: %s, age: %d, job: %s', 'Gunny', errno2, 'Developer')
 
-logf.close<br>
+logf.close
+```
 
 #### Sample output
-09/11/2014|03:33:58PM|testapp01.rb|TestClass:GetUrl|Testing GunnyScreenLog 01<br>
-09/11/2014|03:33:58PM|testapp01.rb|init|Testing GunnyScreenLog 01<br>
-09/11/2014|03:33:58PM|testapp01.rb|destroy|Testing GunnyScreenLog 02<br>
-09/11/2014|03:33:58PM|testapp01.rb|read|Testing GunnyScreenLog 02<br>
-09/11/2014|03:33:58PM|testapp01.rb|sort|Testing GunnyScreenLog 03<br>
-09/11/2014|03:33:58PM|testapp01.rb|sort|name: Gunny, age: 42, job: Developer<br>
-09/11/2014|03:33:58PM|testapp01.rb|sort|name: Gunny, age: 42, job: Developer<br>
-
+```
+09/16/2014|01:45:59PM|testapp01.rb|init|Testing GunnyFileLog 01
+09/16/2014|01:45:59PM|testapp01.rb|setup|Testing GunnyFileLog 01
+09/16/2014|01:45:59PM|testapp01.rb|destroy|Testing GunnyFileLog 02
+09/16/2014|01:45:59PM|testapp01.rb|read|Testing GunnyFileLog 02
+09/16/2014|01:45:59PM|testapp01.rb|read|Testing GunnyFileLog 03
+09/16/2014|01:45:59PM|testapp01.rb|sort|name: Gunny, age: 42, job: Developer
+09/16/2014|01:45:59PM|testapp01.rb|sort|name: Gunny, age: 22, job: Developer
+```
 
 ### Example of logging with logging level
 
 #### Sample code
-logl = GunnyLog.instance<br>
+```
+g = GunnyLog.instance
 
-logl.set_logging_level(GunnyLog::ERROR)<br>
-logl.log_fatal('main', 'error message')<br>
-logl.log_error('main', 'error message')<br>
-logl.log_info('main', 'error message')<br>
+g.set_logging_level(GunnyLog::ERROR)
+g.log_fatal('init', 'error message 1')
+g.log_error('pref', 'error message 2')
+g.log_info('main', 'error message 3')
 
-logl.set_logging_level(GunnyLog::WARNING)<br>
-logl.log_warning('main', 'error message')<br>
-logl.log_unknown('main', 'error message')<br>
-logl.log_debug('main', 'error message')<br>
+g.set_logging_level(GunnyLog::WARNING)
+g.log_warning('getdb', 'error message 4')
+g.log_unknown('main', 'error message 5')
+g.log_debug('genreport', 'error message 6')
+```
 
 #### Sample output
-09/13/2014|06:55:56AM|testapp01.rb|FATAL|main|error message<br>
-09/13/2014|06:55:56AM|testapp01.rb|ERROR|main|error message<br>
-09/13/2014|06:55:56AM|testapp01.rb|WARNING|main|error message<br>
-09/13/2014|06:55:56AM|testapp01.rb|UNKNOWN|main|error message<br>
+```
+09/16/2014|01:48:16PM|testapp01.rb|FATAL|init|error message 1
+09/16/2014|01:48:16PM|testapp01.rb|ERROR|pref|error message 2
+09/16/2014|01:48:16PM|testapp01.rb|WARNING|getdb|error message 4
+09/16/2014|01:48:16PM|testapp01.rb|UNKNOWN|main|error message 5
+```
 
 ## Documentation
 
