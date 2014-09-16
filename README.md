@@ -20,10 +20,10 @@ Or install it yourself as:
 
 ## Usage
 
-### Require GunnyLog
+### GunnyLog Examples
 require 'GunnyLog'
 
-### Example of screen logging, one liners
+### Example of STDOUT logging, one liners
 
 #### Sample code
 ```
@@ -42,7 +42,7 @@ GunnyLog.instance.message_formatted('Error number = %d', errno2)
 09/16/2014|01:27:30PM|testapp01.rb|TestClass:GetUrl|Error number = 22
 ```
 
-### Example of screen logging
+### Example of STDOUT logging
 
 #### Sample code
 ```
@@ -53,9 +53,9 @@ logs.set_logging_enabled(false)
 logs.message('Testing GunnyScreenLog 02 OFF')
 logs.set_logging_enabled(true)
 
-logs.set_message_location('init')
+logs.set_logging_location('init')
 logs.message('Testing GunnyScreenLog 01')
-logs.set_message_location('destroy')
+logs.set_logging_location('destroy')
 logs.message('Testing GunnyScreenLog 02')
 
 logs.message('read','Testing GunnyScreenLog 02')
@@ -88,9 +88,9 @@ logf.set_logging_enabled(false)
 logf.message('Testing GunnyFileLog 02 OFF')
 logf.set_logging_enabled(true)
 
-logf.set_message_location('setup')
+logf.set_logging_location('setup')
 logf.message('Testing GunnyFileLog 01')
-logf.set_message_location('destroy')
+logf.set_logging_location('destroy')
 logf.message('Testing GunnyFileLog 02')
 
 logf.message('read','Testing GunnyFileLog 02')

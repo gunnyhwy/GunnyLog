@@ -63,13 +63,6 @@ class GunnyLog
       @logging_location = loc
     end
 
-    # Set message was logged from message location
-    # @param loc [string] message location name
-    # @deprecated Use {#set_logging_location} instead
-    def set_message_location(loc)
-      @logging_location = loc
-    end
-
     # Set output to STDOUT, default
     def set_output_stdout
       if @file_open
@@ -206,6 +199,12 @@ class GunnyLog
       log(UNKNOWN, loc, msg)
     end
 
+    # Instance method for GunnyLog
+    # @return [GunnyLog] instance
+    def self.instance
+      @@instance ||= new
+    end
+
     # private instance methods
     private
 
@@ -233,6 +232,7 @@ class GunnyLog
       end
     end
 
+    # log with level
     def log(sev, loc, msg)
       if loc == nil
         loc = @logging_location
@@ -243,7 +243,6 @@ class GunnyLog
         @logging_file.puts "#{date_str}|#{$0}|#{level_string(sev)}|#{loc}|#{msg}"
       end
     end
-
 
     # get the date time stamp
     def date_str
